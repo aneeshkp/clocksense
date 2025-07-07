@@ -9,18 +9,24 @@ from charts import plot_offset_chart, plot_state_changes
 st.set_page_config(page_title="ClockSense", layout="wide")
 st.title("🕰️ ClockSense - PTP Log Analyzer")
 
-# Initialize QA chain and vector store with spinner
-if "qa_chain" not in st.session_state:
-    with st.spinner("🔄 Loading AI models..."):
-        qa_chain, vectordb = initialize_qa()
+# Model selection UI
+embed_options = ["all-MiniLM-L6-v2", "all-MiniLM-L12-v2", "sentence-transformers/msmarco-distilbert-base-tas-b"]
+ellm_options = ["llama3", "gpt-3.5-turbo"]
+selected_embed = st.sidebar.selectbox("Select embedding model", embed_options, index=0)
+selected_llm = st.sidebar.selectbox("Select LLM model", ellm_options, index=0)
+
+# Initialize or reload QA chain and vector store
+if ("qa_chain" not in st.session_state) or (st.session_state.get("model_config") != (selected_embed, selected_llm)):
+    with st.spinner("🔄 Loading selected AI models..."):
+        qa_chain, vectordb = initialize_qa(embed_model=selected_embed, llm_model=selected_llm)
         st.session_state.qa_chain = qa_chain
         st.session_state.vectordb = vectordb
+        st.session_state.model_config = (selected_embed, selected_llm)
     st.success("✅ AI models loaded!")
 
 # File upload
 log_file = st.file_uploader("Upload PTP log file", type=["log", "txt"])
 if log_file:
-    # Show spinner while parsing
     with st.spinner("🔄 Parsing log file..."):
         text = log_file.read().decode()
         parsed_data, chunks = parse_ptp_log(text)
@@ -43,7 +49,7 @@ if log_file:
         st.markdown(f"**Answer:** {ans}")
 
     st.markdown("---")
-    # Summary
+    # Daily Summary
     if st.button("Generate Daily Summary"):
         with st.spinner("🔄 Generating summary..."):
             summary = generate_daily_summary(chunks)

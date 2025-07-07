@@ -54,3 +54,17 @@ File Descriptions
     charts.py: Generates Matplotlib figures for offsets and states
 
     requirements.txt: Python dependencies
+
+
+## 📋 Alternative Libraries
+
+| Component       | Current             | Alternatives                        | Why Chosen                                      |
+|-----------------|---------------------|-------------------------------------|-------------------------------------------------|
+| Frontend UI     | Streamlit           | Dash, Gradio, Panel                 | Rapid prototyping with minimal code             |
+| RAG Framework   | LangChain           | LlamaIndex, Haystack, Vertex AI     | Modular chains, broad community support         |
+| Embeddings      | all-MiniLM-L6-v2    | OpenAI Ada, Sentence-BERT           | Compact models offering fast local inference    |
+| Vector Store    | Chroma              | FAISS, Pinecone, Weaviate           | Simple local persistence, easy Python API       |
+| LLM Interface   | Ollama (local Llama)| OpenAI, Cohere, GPT4All             | Local execution avoids latency and API costs    |
+| Charts & Viz    | Matplotlib          | Plotly, Altair, Bokeh               | Familiar API with extensive customization       |
+
+
