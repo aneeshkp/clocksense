@@ -1,0 +1,10 @@
+streamlit
+langchain
+langchain-huggingface
+langchain-chroma
+langchain-ollama
+chromadb
+sentence-transformers
+ollama
+matplotlib
+pandas
